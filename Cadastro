@@ -1,0 +1,92 @@
+CREATE TABLE ALUNO (
+    sexo char(1),
+    idade int,
+    data_inscricao_curso date,
+    telefone varchar(20),
+    valor_pago_curso float(10,2),
+    ativo_sn int,
+    endereco text,
+    nome varchar(25)
+);
+
+CREATE TABLE ALUNO_CURSO (
+    id_alunocurso int auto_increment PRIMARY KEY,
+    fk_idaluno int,
+    fk_idcurso int
+);
+
+ALTER TABLE ALUNO_CURSO ADD CONSTRAINT fk_aluno_curso
+    FOREIGN KEY (fk_idaluno)
+    REFERENCES ALUNO (idaluno);
+ 
+ALTER TABLE ALUNO_CURSO ADD CONSTRAINT fk_curso_aluno
+    FOREIGN KEY (fk_idcurso)
+    REFERENCES CURSO (idcurso);
+
+create table disciplina(
+    iddisciplina int auto_increment,
+    descricao varchar(50) not null,
+    carga_horaria int,
+    codigo_professor int,
+    nome_professor varchar(50),
+    email_professor varchar(100),
+    fk_idcurso int,
+    constraint pk_iddisciplina primary key(iddisciplina)
+);
+
+desc disciplina;
+
+alter table disciplina add constraint fk_curso_disciplina
+foreign key(fk_idcurso) references curso(idcurso);
+
+create table professor(
+    idprofessor int auto_increment,
+    nome varchar(50) not null,
+    email varchar(100),
+    constraint pk_professor primary key(idprofessor)
+);
+
+update disciplina set email_professor = 'jorge@teste.com.br'
+where codigo_professor = 100;
+
+insert into professor(
+    idprofessor,
+    nome,
+    email
+)
+    
+alter table disciplina drop column nome_professor;
+alter table disciplina drop column email_professor;
+
+create table projeto(
+	idcodigo int auto_increment,
+    data_criacao datetime default current_timestamp,
+    nome varchar(100) not null,
+    constraint pk_projeto primary key(idcodigo)
+);
+
+create table funcionario(
+    idmatricula int auto_increment,
+    nome varchar(50) not null,
+    funcao varchar(50) not null,
+    telefone varchar(20),
+    constraint pk_funcionario primary key(idmatricula)
+);
+
+create table projeto_funcionario2(
+    fk_idcodigo int,
+    fk_idmatricula int,
+    horas_estimadas int not null,
+    horas_realizadas int,
+    constraint pk_projeto_funcionario 
+    primary key( fk_idcodigo,  fk_idmatricula)
+);
+
+ alter table projeto_funcionario2 add constraint
+ foreign key(fk_idcodigo) 
+ references projeto(idcodigo);
+ 
+ alter table projeto_funcionario2 add constraint
+ foreign key(fk_idmatricula) 
+ references funcionario(idmatricula);
+
